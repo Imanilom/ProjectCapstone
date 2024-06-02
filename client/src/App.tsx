@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
@@ -13,13 +13,20 @@ function App() {
     'rgba(54, 162, 235, 0.5)', // Tongkol
     'rgba(255, 206, 86, 0.5)', // Tuna
     'rgba(75, 192, 192, 0.5)', // Udang
-    // ... tambahkan warna lain jika diperlukan
   ];
+
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+
+  
   const today = new Date();
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1); // Add 1 day to today's date
 
-  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   const formattedDate = tomorrow.toLocaleDateString('en-US', options); // Format the date
 
   useEffect(() => {
@@ -43,31 +50,47 @@ function App() {
     datasets: [
       {
         label: 'Cakalang',
-        data: Object.values(originalData).map((yearData): any => 
-          yearData.reduce((sum: any, item: { Cakalang: any; }) => sum + item.Cakalang, 0)
-        ),
+        data: Object.values(originalData).map((value: unknown) => {
+          if (Array.isArray(value)) { 
+            return value.reduce((sum: any, item: { Cakalang: any; }) => sum + item.Cakalang, 0);
+          } else {
+            return 0; // Or some default value if it's not an array
+          }
+        }),
         backgroundColor: colors[0], 
       },
       {
         label: 'Tongkol',
-        data: Object.values(originalData).map((yearData): any => 
-          yearData.reduce((sum: any, item: { Tongkol: any; }) => sum + item.Tongkol, 0)
-        ),
-        backgroundColor: colors[1], 
+        data: Object.values(originalData).map((value: unknown) => {
+          if (Array.isArray(value)) { 
+            return value.reduce((sum: any, item: { Tongkol: any; }) => sum + item.Tongkol, 0);
+          } else {
+            return 0; // Or some default value if it's not an array
+          }
+        }),
+        backgroundColor: colors[0], 
       },
       {
         label: 'Tuna',
-        data: Object.values(originalData).map((yearData): any => 
-          yearData.reduce((sum: any, item: { Tuna: any; }) => sum + item.Tuna, 0)
-        ),
-        backgroundColor: colors[2], 
+        data: Object.values(originalData).map((value: unknown) => {
+          if (Array.isArray(value)) { 
+            return value.reduce((sum: any, item: { Tuna: any; }) => sum + item.Tuna, 0);
+          } else {
+            return 0; // Or some default value if it's not an array
+          }
+        }),
+        backgroundColor: colors[0], 
       },
       {
         label: 'Udang',
-        data: Object.values(originalData).map((yearData): any => 
-          yearData.reduce((sum: any, item: { Udang: any; }) => sum + item.Udang, 0)
-        ),
-        backgroundColor: colors[3], 
+        data: Object.values(originalData).map((value: unknown) => {
+          if (Array.isArray(value)) { 
+            return value.reduce((sum: any, item: { Udang: any; }) => sum + item.Udang, 0);
+          } else {
+            return 0; // Or some default value if it's not an array
+          }
+        }),
+        backgroundColor: colors[0], 
       },
 
       // ... dataset lain untuk jenis ikan lainnya
@@ -104,16 +127,16 @@ function App() {
   return (
     <>
     <div className="container mx-auto p-4">
-    <h1 className="text-3xl font-bold mb-4 text-center">Data dan Prediksi Produksi Ikan</h1>
+      <h1 className="text-3xl font-bold mb-4 text-center">Data dan Prediksi Produksi Ikan</h1>
 
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {/* Chart */}
-      <div>
-        <h2 className="text-xl font-semibold mb-2">Data Produksi Ikan dari Tahun 2017-2021</h2>
-        <Bar data={originalChartData} />
-      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Chart */}
+        <div>
+          <h2 className="text-xl font-semibold mb-2">Data Produksi Ikan dari Tahun 2017-2021</h2>
+          <Bar data={originalChartData} />
+        </div>
 
-      {/* Tabel Prediksi */}
+        {/* Tabel Prediksi */}
       <div>
       <h2 className="text-xl font-semibold mb-2">Prediksi Produksi Ikan Hari Berikutnya</h2>
       <table className="table-auto border-collapse w-full">
@@ -152,8 +175,7 @@ function App() {
     </div>
     </div>
   </div>
-      
-    </>
+  </>
   );
 }
 
