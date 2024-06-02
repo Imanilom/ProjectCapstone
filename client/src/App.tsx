@@ -23,11 +23,11 @@ function App() {
   const formattedDate = tomorrow.toLocaleDateString('en-US', options); // Format the date
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/api/data')
+    fetch('110.239.71.252:1414/api/data')
       .then(res => res.json())
       .then(data => setOriginalData(data));
 
-    fetch('http://127.0.0.1:5000/api/predictions')
+    fetch('110.239.71.252:1414/api/predictions')
       .then(res => res.json())
       .then(data => setPredictionData(data));
   }, []);

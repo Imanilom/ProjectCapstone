@@ -145,4 +145,4 @@ def get_predictions():
     return jsonify(prediction_data)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port='1414', host='0.0.0.0', debug=True)
